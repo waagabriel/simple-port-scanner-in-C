@@ -9,21 +9,21 @@
 
 int main(int argc, char** argv){
   unsigned int openPortsNumber = 0;
-  for(int port = 1; port <= MAX_PORT; port++){
-  int sd = socket(AF_INET, SOCK_STREAM, 0);
+
   struct sockaddr_in listener;
 
   if(argc == 1){
-      //if no comand line argument is given, it scans the localhost
     listener.sin_addr.s_addr = INADDR_ANY;
   }else{
-      //inputs the ip to port scan
-      listener.sin_addr.s_addr = inet_addr(argv[1]);
+    listener.sin_addr.s_addr = inet_addr(argv[1]);
   }
-    if(listener.sin_addr.s_addr == INADDR_NONE){
-      fprintf(stderr, "Error");
-      return -1;
-    }
+  if(listener.sin_addr.s_addr == INADDR_NONE){
+    fprintf(stderr, "Erro cant get the address.");
+    return -1;
+  }
+
+  for(int port = 1; port <= MAX_PORT; port++){
+  int sd = socket(AF_INET, SOCK_STREAM, 0);
     listener.sin_family = AF_INET;
     listener.sin_port = htons(port);
     int retconnect = connect(sd, (struct sockaddr*)&listener, sizeof(listener));
